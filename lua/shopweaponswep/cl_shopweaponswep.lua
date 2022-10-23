@@ -9,7 +9,7 @@ net.Receive("shopweaponswep", function()
     local screenwidth = ScrW()
     local screenheight = ScrH()
     local motherFrame = vgui.Create("DFrame")
-    motherFrame:SetSize(screenwidth / 4, screenheight / 5)
+    motherFrame:SetSize(screenwidth / 4, screenwidth / 5)
     motherFrame:SetVisible(true)
     motherFrame:SetDraggable(true)
     motherFrame:ShowCloseButton(true)
@@ -26,6 +26,9 @@ net.Receive("shopweaponswep", function()
     function motherFrame:OnKeyCodePressed(key)
         if key == KEY_Q then
             self:Close()
+            if IsValid(OpenDropdown) then
+                OpenDropdown:Remove()
+            end
         end
     end
     ---
@@ -53,17 +56,19 @@ net.Receive("shopweaponswep", function()
 		if IsValid(OpenDropdown) then
             OpenDropdown:Remove()
             print("isvalid passed")
+            return false
         end
 
-        local DropDownEntities = vgui.Create("DScrollPanel", motherFrame)
+        local DropDownEntities = vgui.Create("DScrollPanel")
         local DropdownBar = DropDownEntities:GetVBar()
         DropDownEntities:SetSize(500, 210) -- button size (465, 50)
-        DropDownEntities:SetPos(200, 200) -- we need to create a new panel because putting this outside motherframe dont work because garry is a fucking shit
+        DropDownEntities:SetPos(1210, 378) -- we need to create a new panel because putting this outside motherframe dont work because garry is a fucking shit
+        DropDownEntities:NoClipping(true)
         DropdownBar:SetHideButtons(true)
         print(DropDownEntities)
 
         function DropDownEntities:Paint(w, h)
-            surface.SetDrawColor(200, 0, 0, 10)
+            surface.SetDrawColor(200, 0, 0, 100)
             surface.DrawRect(0, 0, w, h)
             -- return nil
         end
