@@ -1,33 +1,48 @@
 local entTable = {
     [1] = {
         ent = "arccw_ammo_pistol_large",
-        price = 9128341,
-        printname = "I'LL ASK AGAIN..."
+        price = 10,
+        printname = "Pistol Ammo"
     },
     [2] = {
         ent = "arccw_ammo_357_large",
-        price = 1, -- nobody want that shit :skull:
-        printname = "WHAT HE SAY....."
+        price = 20,
+        printname = "Magnum Ammo"
     },
     [3] = {
         ent = "arccw_ammo_smg1_large",
-        price = 100,
-        printname = "smg1"
+        price = 15,
+        printname = "Carbine Ammo"
     },
     [4] = {
         ent = "arccw_ammo_ar2_large",
-        price = 250,
-        printname = "ar2"
+        price = 30,
+        printname = "Rifle Ammo"
     },
     [5] = {
         ent = "arccw_ammo_buckshot_large",
-        price = 50,
-        printname = "shotgun ammo (fed killer)"
+        price = 25,
+        printname = "Shotgun Ammo"
     },
     [6] = {
-        ent = "arccw_ammo_sniper_large",
-        price = 9001,
-        printname = "fed destroyer"
+        ent = "item_healthkit",
+        price = 25,
+        printname = "Health Kit"
+    },
+    [7] = {
+        ent = "item_suitbattery",
+        price = 50,
+        printname = "Suit Battery"
+    },
+    [8] = {
+        ent = "ent_jack_gmod_ezarmor_mhead", -- jmod armor
+        price = 200,
+        printname = "Medium Helmet"
+    },
+    [9] = {
+        ent = "ent_jack_gmod_ezarmor_mtorso", -- jmod armor
+        price = 300,
+        printname = "Medium Armor"
     }
 }
 
@@ -173,7 +188,7 @@ net.Receive("shopweaponswep", function()
             local DropdownTestButton = DropDownEntities:Add("DButton")
             DropdownTestButton:SetText("")
             DropdownTestButton:Dock(TOP)
-            DropdownTestButton:DockMargin(0, 5, 20, 1)
+            DropdownTestButton:DockMargin(0, 5, 5, 1)
             DropdownTestButton:SetSize(50, 20)
             function DropdownTestButton:Paint(w, h)
                 local pricestring = tostring("$" .. v.price)
