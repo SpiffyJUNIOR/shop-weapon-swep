@@ -7,7 +7,7 @@ local entTable = {
     [2] = {
         ent = "arccw_ammo_357_large",
         price = 1, -- nobody want that shit :skull:
-        printname = "...ARE YOU BLACK?"
+        printname = "WHAT HE SAY....."
     },
     [3] = {
         ent = "arccw_ammo_smg1_large",
@@ -34,7 +34,7 @@ local entTable = {
 local OpenMotherFrame = nil
 local OpenDropdown = nil
 local price = nil
-local selectedentity = nil
+local selectedentity, selectedentityname = nil, nil
 local primarytext = (Color(255, 255, 255, 255))
 
 net.Receive("shopweaponswep", function()
@@ -61,34 +61,81 @@ net.Receive("shopweaponswep", function()
     function motherFrame:OnKeyCodePressed(key)
         if key == KEY_Q then
             self:Close()
-            if IsValid(OpenDropdown) then
-                OpenDropdown:Remove()
-            end
+        end
+    end
+
+    function motherFrame:OnClose()
+        if IsValid(OpenDropdown) then
+            OpenDropdown:Remove()
         end
     end
     ---
 
-	local DropDownButton = vgui.Create("DButton", motherFrame)
-	DropDownButton:SetPos(16, 30)
-	DropDownButton:SetSize(screenwidth / 4 - 32, 30)
-	DropDownButton:SetText("")
+    local EntNameLabel = vgui.Create("DLabel", motherFrame)
+    EntNameLabel:SetPos(16, 85)
+    EntNameLabel:SetSize(300, 20)
+    EntNameLabel:SetText("Name: N/A")
+    EntNameLabel:SetTextColor(primarytext)
 
-    function DropDownButton:Paint(w, h)
+    function EntNameLabel:Paint(w, h)
+        -- draw.RoundedBox(8, 0, 0, w, h, Color(200, 0, 0, 10))
+        return nil
+    end
+    ---
+
+    local PriceLabel = vgui.Create("DLabel", motherFrame)
+    PriceLabel:SetPos(16, 105)
+    PriceLabel:SetSize(300, 20) -- if you unironically fill this somehow you need help
+    PriceLabel:SetText("Price: N/A")
+    PriceLabel:SetTextColor(primarytext)
+
+    function PriceLabel:Paint(w, h)
+        -- draw.RoundedBox(8, 0, 0, w, h, Color(200, 0, 0, 10))
+        return nil
+    end
+    ---
+
+	local BuyButton = vgui.Create("DButton", motherFrame)
+	BuyButton:SetPos(186, 160)
+	BuyButton:SetSize(screenwidth / 8 - 128, 30)
+	BuyButton:SetText("")
+
+    function BuyButton:Paint(w, h)
 	    surface.SetDrawColor(50, 50, 50, 255)
 	    surface.DrawRect(0, 0, w, h)
         surface.SetTextColor(primarytext)
+        surface.SetTextPos(48, 9)
+        surface.DrawText("BUY")
+    end
+
+    function BuyButton:DoClick()
+        if IsValid(price) and IsValid(selectedentity) and IsValid(ply) and ply:Alive() then
+            -- net send entity spawn code here
+        end
+    end
+    ---
+
+    local DropDownButton = vgui.Create("DButton", motherFrame)
+    DropDownButton:SetPos(16, 30)
+    DropDownButton:SetSize(screenwidth / 4 - 32, 30)
+    DropDownButton:SetText("")
+
+    function DropDownButton:Paint(w, h)
+        surface.SetDrawColor(50, 50, 50, 150)
+        surface.DrawRect(0, 0, w, h)
+        surface.SetTextColor(primarytext)
         surface.SetTextPos(6, 9)
         surface.DrawText("Select Ent:")
-	    surface.SetDrawColor(70, 70, 70, 255)
-	    surface.DrawRect(405, 5, 40, 20)
+        surface.SetDrawColor(70, 70, 70, 200)
+        surface.DrawRect(400, 5, 40, 20)
         surface.SetTextColor(primarytext)
-        surface.SetTextPos(423, 8)
+        surface.SetTextPos(418, 8)
         surface.DrawText(">")
     end
 
     function DropDownButton:DoClick()
-    	print("button clicked")
-		if IsValid(OpenDropdown) then
+        print("button clicked")
+        if IsValid(OpenDropdown) then
             OpenDropdown:Remove()
             print("isvalid passed")
             return false
@@ -141,75 +188,19 @@ net.Receive("shopweaponswep", function()
                 surface.DrawText(v.printname)
                 draw.DrawText(pricestring, DermaDefault, 456, 4, primarytext, TEXT_ALIGN_RIGHT)
             end
-        end
-
-        -- for i = 0, 6 do
-        --     local DropdownTestButton = DropDownEntities:Add("DButton")
-        --     DropdownTestButton:SetText("")
-        --     DropdownTestButton:Dock(TOP)
-        --     DropdownTestButton:DockMargin(0, 0, 0, 5)
-        --     DropdownTestButton:SetSize(400, 44)
-        --     function DropdownTestButton:Paint(w, h)
-        --         surface.SetDrawColor(40, 40, 40, 100)
-        --         surface.DrawRect(0, 0, w, h)
-        --         if DropdownTestButton:IsHovered() then -- gradient start: (255, 86, 65) end: (255, 190, 131)
-        --             surface.SetDrawColor(255, 86, 65)
-        --             DrawOutlinedTexturedRect(self, gradient_mat, 4)
-        --             settingsHelpText:SetText("Love.")
-        --         end
-        --         surface.SetTextColor(primarytext)
-        --         surface.SetTextPos(14, 12)
-        --         surface.SetFont("MichromaRegular")
-        --         surface.DrawText("Button #" .. i)
-        --     end
-        -- end
-    end
-    ---
-
-    local NameLabel = vgui.Create("DLabel", motherFrame)
-    NameLabel:SetPos(16, 85)
-    NameLabel:SetSize(130, 20)
-    NameLabel:SetText("Name: N/A")
-    NameLabel:SetTextColor(primarytext)
-
-    function NameLabel:Paint(w, h)
-        -- draw.RoundedBox(8, 0, 0, w, h, Color(200, 0, 0, 10))
-        return nil
-    end
-    ---
-
-    local PriceLabel = vgui.Create("DLabel", motherFrame)
-    PriceLabel:SetPos(16, 105)
-    PriceLabel:SetSize(130, 20)
-    PriceLabel:SetText("Price: N/A")
-    PriceLabel:SetTextColor(primarytext)
-
-    function PriceLabel:Paint(w, h)
-        -- draw.RoundedBox(8, 0, 0, w, h, Color(200, 0, 0, 10))
-        return nil
-    end
-
-    ---
-
-	local BuyButton = vgui.Create("DButton", motherFrame)
-	BuyButton:SetPos(186, 160)
-	BuyButton:SetSize(screenwidth / 8 - 128, 30)
-	BuyButton:SetText("")
-
-    function BuyButton:Paint(w, h)
-	    surface.SetDrawColor(50, 50, 50, 255)
-	    surface.DrawRect(0, 0, w, h)
-        surface.SetTextColor(primarytext)
-        surface.SetTextPos(48, 9)
-        surface.DrawText("BUY")
-    end
-
-    function BuyButton:DoClick()
-        if IsValid(price) and IsValid(selectedentity) then
-            -- net send entity spawn code here
+            function DropdownTestButton:DoClick()
+                local pricestring = tostring("$" .. v.price)
+                selectedentity = (v.ent)
+                selectedentityname = (v.printname)
+                price = (v.price)
+                print(selectedentity)
+                print(selectedentityname)
+                print(price)
+                EntNameLabel:SetText("Name: " .. selectedentityname)
+                PriceLabel:SetText("Price: " .. pricestring)
+            end
         end
     end
-
 	---
     OpenMotherFrame = motherFrame
 end)
