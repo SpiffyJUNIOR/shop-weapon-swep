@@ -1,0 +1,6 @@
+opens a Derma window when you press primary attack
+menu reads from a table (has a drop-down box) a list of ents, 
+show the ent name on a label (Name: weapon_blablabla), 
+get its price from the same table
+add a buy button 
+When you click buy, create the ent at the players position
