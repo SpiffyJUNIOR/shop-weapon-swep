@@ -110,22 +110,23 @@ net.Receive("shopweaponswep", function()
     end
     ---
 
-	local BuyButton = vgui.Create("DButton", motherFrame)
-	BuyButton:SetPos(186, 160)
-	BuyButton:SetSize(screenwidth / 8 - 128, 30)
-	BuyButton:SetText("")
+    local BuyButton = vgui.Create("DButton", motherFrame)
+    BuyButton:SetPos(186, 160)
+    BuyButton:SetSize(screenwidth / 8 - 128, 30)
+    BuyButton:SetText("")
 
     function BuyButton:Paint(w, h)
-	    surface.SetDrawColor(50, 50, 50, 255)
-	    surface.DrawRect(0, 0, w, h)
-        surface.SetTextColor(primarytext)
-        surface.SetTextPos(48, 9)
-        surface.DrawText("BUY")
+        surface.SetDrawColor(50, 50, 50, 255)
+        surface.DrawRect(0, 0, w, h)
+        draw.DrawText("BUY", DermaDefault, 56, 9, primarytext, TEXT_ALIGN_CENTER)
     end
 
     function BuyButton:DoClick()
-        if IsValid(price) and IsValid(selectedentity) and IsValid(ply) and ply:Alive() then
-            -- net send entity spawn code here
+        if IsValid(selectedentity) and isstring(selectedentity) and IsValid(ply) and ply:Alive() then
+            net.Start("shopweaponswep_spawnent")
+            net.WriteString(selectedentity)
+            net.Send(ply)
+            ply:PrintMessage(HUD_PRINTTALK, "Entity bought!")
         end
     end
     ---
@@ -134,13 +135,14 @@ net.Receive("shopweaponswep", function()
     DropDownButton:SetPos(16, 30)
     DropDownButton:SetSize(screenwidth / 4 - 32, 30)
     DropDownButton:SetText("")
+    local DropDownText = "Select Ent: N/A"
 
     function DropDownButton:Paint(w, h)
         surface.SetDrawColor(50, 50, 50, 150)
         surface.DrawRect(0, 0, w, h)
         surface.SetTextColor(primarytext)
         surface.SetTextPos(6, 9)
-        surface.DrawText("Select Ent:")
+        surface.DrawText(DropDownText)
         surface.SetDrawColor(70, 70, 70, 200)
         surface.DrawRect(400, 5, 40, 20)
         surface.SetTextColor(primarytext)
@@ -179,7 +181,7 @@ net.Receive("shopweaponswep", function()
             draw.RoundedBox(0, 0, 0, w, h, Color(43, 39, 35, 66))
         end
         function DropdownBar.btnGrip:Paint(w, h)
-            draw.RoundedBox(0, 0, 0, w, h, Color(76, 76, 74))
+            draw.RoundedBox(0, 0, 0, w, h, Color(76, 76, 74, 150))
         end
 
         OpenDropdown = DropDownEntities
@@ -208,6 +210,7 @@ net.Receive("shopweaponswep", function()
                 selectedentity = (v.ent)
                 selectedentityname = (v.printname)
                 price = (v.price)
+                DropDownText = tostring("Select Ent: " .. selectedentityname)
                 print(selectedentity)
                 print(selectedentityname)
                 print(price)
