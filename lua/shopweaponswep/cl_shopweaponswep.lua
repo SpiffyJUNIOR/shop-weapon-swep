@@ -30,7 +30,7 @@ local entTable = {
         printname = "Health Kit"
     },
     [7] = {
-        ent = "item_suitbattery",
+        ent = "item_battery",
         price = 50,
         printname = "Suit Battery"
     },
@@ -43,7 +43,12 @@ local entTable = {
         ent = "ent_jack_gmod_ezarmor_mtorso", -- jmod armor
         price = 300,
         printname = "Medium Armor"
-    }
+    },
+    [10] = {
+        ent = "arccw_ud_m16", -- jmod armor
+        price = 850,
+        printname = "M16A2"
+    },
 }
 
 local OpenMotherFrame = nil
@@ -122,10 +127,13 @@ net.Receive("shopweaponswep", function()
     end
 
     function BuyButton:DoClick()
-        if IsValid(selectedentity) and isstring(selectedentity) and IsValid(ply) and ply:Alive() then
+        print(selectedentity)
+        print(IsValid(ply))
+        print(ply:Alive())
+        if isstring(selectedentity) and IsValid(ply) and ply:Alive() then
             net.Start("shopweaponswep_spawnent")
             net.WriteString(selectedentity)
-            net.Send(ply)
+            net.SendToServer()
             ply:PrintMessage(HUD_PRINTTALK, "Entity bought!")
         end
     end
@@ -151,17 +159,9 @@ net.Receive("shopweaponswep", function()
     end
 
     function DropDownButton:DoClick()
-        print("button clicked")
         if IsValid(OpenDropdown) then
             OpenDropdown:Remove()
-            print("isvalid passed")
             return false
-        end
-
-        for k, v in ipairs(entTable) do
-            print(v.ent)
-            print(v.price)
-            print(v.printname)
         end
 
         local DropDownEntities = vgui.Create("DScrollPanel")
@@ -170,7 +170,6 @@ net.Receive("shopweaponswep", function()
         DropDownEntities:SetPos(1210, 432) -- we need to create a new panel because putting this outside motherframe dont work because garry is a fucking shit
         DropDownEntities:SetDragParent(motherFrame)
         DropdownBar:SetHideButtons(true)
-        print(DropDownEntities)
 
         function DropDownEntities:Paint(w, h)
             draw.RoundedBox(8, 0, 0, w, h, Color(30, 30, 30, 200))
@@ -211,9 +210,9 @@ net.Receive("shopweaponswep", function()
                 selectedentityname = (v.printname)
                 price = (v.price)
                 DropDownText = tostring("Select Ent: " .. selectedentityname)
-                print(selectedentity)
-                print(selectedentityname)
-                print(price)
+                -- print(selectedentity)
+                -- print(selectedentityname)
+                -- print(price)
                 EntNameLabel:SetText("Name: " .. selectedentityname)
                 PriceLabel:SetText("Price: " .. pricestring)
             end
