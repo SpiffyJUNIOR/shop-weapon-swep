@@ -45,7 +45,7 @@ local entTable = {
         printname = "Medium Armor"
     },
     [10] = {
-        ent = "arccw_ud_m16", -- jmod armor
+        ent = "arccw_ud_m16", -- urban decay m16
         price = 850,
         printname = "M16A2"
     },
@@ -127,9 +127,6 @@ net.Receive("shopweaponswep", function()
     end
 
     function BuyButton:DoClick()
-        print(selectedentity)
-        print(IsValid(ply))
-        print(ply:Alive())
         if isstring(selectedentity) and IsValid(ply) and ply:Alive() then
             net.Start("shopweaponswep_spawnent")
             net.WriteString(selectedentity)
@@ -210,9 +207,6 @@ net.Receive("shopweaponswep", function()
                 selectedentityname = (v.printname)
                 price = (v.price)
                 DropDownText = tostring("Select Ent: " .. selectedentityname)
-                -- print(selectedentity)
-                -- print(selectedentityname)
-                -- print(price)
                 EntNameLabel:SetText("Name: " .. selectedentityname)
                 PriceLabel:SetText("Price: " .. pricestring)
             end

@@ -36,7 +36,6 @@ function SWEP:Initialize()
 end
 
 function SWEP:PrimaryAttack()
-	print("attack called")
 	if SERVER then
 	    net.Start("shopweaponswep")
 	    net.Send(self:GetOwner())
